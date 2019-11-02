@@ -38,9 +38,11 @@ def fun_getCPM(gmc): # Dies ist die Funktion zum auslesen von dem CPM Wert
 
 def fun_urlopenHM(IP, uSIV=1337): #Funktion zum Aufrufen der HM URLs
     URL='http://%s:8181/blabla.exe?Antwort=dom.GetObject("uSivert").State(%s)'%(IP, uSIV)
-    HMstatus=requests.post(URL, timeout=5)
-    print("\nHomematicIP: %s antwortet %s und %s ")%(IP, HMstatus, HMstatus.content)
-
+    try:
+            HMstatus=requests.post(URL, timeout=5)
+            print("\nHomematicIP: %s antwortet %s und %s ")%(IP, HMstatus, HMstatus.content)
+    except:
+            print("Beim Uebertragen nach %s gabs einen Fehler!")%(IP)
 
 #Variablen mit 0 fuellen
 CPM10M = 0
@@ -76,12 +78,17 @@ while True:
         fun_urlopenHM(HMMarvin, uSIV10M) #MarvinCCU bekommt uSiv (ueber Funktion)
         fun_urlopenHM(HMPapa, uSIV10M) # Das gleiche fuer Papa
 
-        radmonstatus=requests.post('https://radmon.org/radmon.php?user=%s&password=%s&function=submit&datetime=%s&value=%s&unit=CPM HTTP/1.1'%(User, Passwort, datestring, CPM10M), timeout = 10) #Radmon aktualisieren
-        print("\nRadmon antwortet %s und %s")%(radmonstatus, radmonstatus.content)
+        try:
+            radmonstatus=requests.post('https://radmon.org/radmon.php?user=%s&password=%s&function=submit&datetime=%s&value=%s&unit=CPM HTTP/1.1'%(Use$
+            print("\nRadmon antwortet %s und %s")%(radmonstatus, radmonstatus.content)
+        except:
+            print("\nRadmon Uebertragunsfehler")
 
-        gmcstatus=requests.post('http://www.GMCmap.com/log2.asp?AID=%s&GID=%s&CPM=%s&uSV=%s'%(GMCAccountID, GMCGeigerID, CPM10M, uSIV), timeout = 10) #GMCMAP aktualisieren
-        print("\nGMCMon antwortet %s und %s")%(gmcstatus, gmcstatus.content)
-
+        try:
+            gmcstatus=requests.post('http://www.GMCmap.com/log2.asp?AID=%s&GID=%s&CPM=%s&uSV=%s'%(GMCAccountID, GMCGeigerID, CPM10M, uSIV), timeout = $
+            print("\nGMCMon antwortet %s und %s")%(gmcstatus, gmcstatus.content)
+        except:
+            print("\nGMCMon Uebertragunsfehler")
 #Safecast ist ein wenig komplizierter, da wir ein Json schicken muessen...
         Safecastpayload = { #Hier schreiben wir das Json zusammen mit allen wichtigen Keys und Werten
             "api_key": APISAFECAST, #unser API-Key
@@ -91,8 +98,12 @@ while True:
             "longitude":longitude, # UnserOrt2
             "captured_at":datestringohne,
         }
-        responsesafecast = requests.post("https://api.safecast.org/measurements.json", json=Safecastpayload, timeout=10)
-        print("\nSafecast antwortet %s und %s")%(responsesafecast, responsesafecast.content)
+        try:
+            responsesafecast = requests.post("https://api.safecast.org/measurements.json", json=Safecastpayload, timeout=10)
+            print("\nSafecast antwortet %s und %s")%(responsesafecast, responsesafecast.content)
+        except:
+            print("\nSafecast Uebertragunsfehler")
+
 #responsesafecasting = requests.post("https://api.ingest.safecast.org", json=Safecastpayload, timeout=5) #Ingest.Safecast funktioniert grade nicht
 #print("\nIngest Safecast antwortet %s und %s")%(responsesafecasting, responsesafecasting.content)
 
@@ -101,9 +112,11 @@ while True:
             "X-User-hash":uradkey, #is your user KEY, again on the dashboard.
             "X-Device-id":uraddeviceid, #
         }
-        uradstatus=requests.post('https://data.uradmonitor.com/api/v1/upload/exp/01/%s/0B/%s/10/0x8/0E/1337'%(unixtime, CPM10M), headers=uradheaders, timeout=10) #urad aktualisieren
-        print("\nUrad antwortet %s und %s")%(uradstatus, uradstatus.content)
-
+        try:
+            uradstatus=requests.post('https://data.uradmonitor.com/api/v1/upload/exp/01/%s/0B/%s/10/0x8/0E/1337'%(unixtime, CPM10M), headers=uradheade$
+            print("\nUrad antwortet %s und %s")%(uradstatus, uradstatus.content)
+        except:
+            print("Fehler beim Datentransfer nach Urad")
 #Nach dem erfolgreichen schicken werden die Variablen wieder auf 0 gesetzt um wieder 10 Minuten Pause zu machen.
         Minute = 0
         uSIV = 0
