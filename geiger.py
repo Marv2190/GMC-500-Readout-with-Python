@@ -85,7 +85,7 @@ while True:
             print("\nRadmon Uebertragunsfehler")
 
         try:
-            gmcstatus=requests.post('http://www.GMCmap.com/log2.asp?AID=%s&GID=%s&CPM=%s&uSV=%s'%(GMCAccountID, GMCGeigerID, CPM10M, uSIV), timeout = $
+            gmcstatus=requests.post('http://www.GMCmap.com/log2.asp?AID=%s&GID=%s&CPM=%s&uSV=%s'%(GMCAccountID, GMCGeigerID, CPM10M, uSIV10M), timeout = $
             print("\nGMCMon antwortet %s und %s")%(gmcstatus, gmcstatus.content)
         except:
             print("\nGMCMon Uebertragunsfehler")
