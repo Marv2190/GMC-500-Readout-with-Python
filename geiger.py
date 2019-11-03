@@ -56,9 +56,8 @@ while True:
 #Abfrage und umwandlung des Zaehlers / Werte
     CPM=fun_getCPM(gmc) #Mit Hilfe der Funktion getCPM wird der CPM Wert in die Var CPM geschrieben
     print("CPM:{}".format(CPM))
-    uSIVstr="%0.2f" %(((CPM *6.5/1000)*100)/100) #usiv wird errechnet und auf 2 Dezimalstellen gerundet
-    print("uSv:{}".format(uSIVstr))
-    uSIV = float(uSIVstr)
+    uSIV= round((CPM *6.5/1000), 2) #usiv wird errechnet und auf 2 Dezimalstellen gerundet
+    print("uSv:{}".format(uSIV))
 
     if Minute == 10:
         print("10Minuten Schlaf sind um - starte Transfer\n\n")
