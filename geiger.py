@@ -28,8 +28,12 @@ gmc= serial.Serial('/dev/ttyUSB0', 115200, timeout=10) #device Unser Geigerzaehl
 #Funktionen fuer spaeter
 
 def fun_getCPM(gmc): # Dies ist die Funktion zum auslesen von dem CPM Wert
-    gmc.write(b'<GETCPM>>')
-    dat = gmc.read(4)
+    try:
+        gmc.write(b'<GETCPM>>')
+        dat = gmc.read(4)
+    except:
+        print("Konnte keine Daten vom Geiger abholen")
+
     try:
         gv= ord(dat[0])<< 8 | ord(dat[3])
     except IndexError:
